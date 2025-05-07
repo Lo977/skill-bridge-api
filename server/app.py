@@ -18,6 +18,18 @@ from models import User, SkillOffer, SkillMatch
 @app.route('/')
 def index():
     return '<h1>Project Server WELCOME</h1>'
+class UserResource(Resource):
+    def get(self, id=None):
+        if id is not None:
+            user = User.query.get(id)  
+            if user: 
+                return user.to_dict(),200
+            return {"message":"User not Foound!"},404
+        return [user.to_dict() for user in User.query.all()], 200
+
+
+api.add_resource(UserResource, '/users', '/users/<int:id>')
+
 
 
 if __name__ == '__main__':

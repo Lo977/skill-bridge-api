@@ -17,9 +17,31 @@ class User(db.Model, SerializerMixin):
     skill_offers = db.relationship('SkillOffer', back_populates='user',cascade="all, delete-orphan")
     skill_matches = db.relationship('SkillMatch', back_populates='user',cascade="all,delete-orphan")
 
-    serialize_rules =('-_password_hash','-skill_offers.user','-skill_matches.user')
-
     matched_skill_offers = association_proxy('skill_matches', 'skill_offer')
+
+    # serialize_rules = (
+    # '-_password_hash',
+    # '-skill_offers.user',
+    # '-skill_matches.user',
+    # '-matched_skill_offers.user',
+    # '-matched_skill_offers.matches',
+    # )
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "matched_offers": [
+                    {
+                        "username": offer.user.username,
+                        "title": offer.title
+                    }
+                    for offer in self.matched_skill_offers
+                ]
+        }
+
+
+
 
     
     @validates("username")
