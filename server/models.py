@@ -5,7 +5,7 @@ from config import db, bcrypt
 from sqlalchemy.orm import validates
 
 # Models go here!
-'''---------------------------------------------------------------------------'''
+'''---------------------------------User------------------------------------------'''
 class User(db.Model, SerializerMixin):
     __tablename__ = "users" 
 
@@ -39,10 +39,6 @@ class User(db.Model, SerializerMixin):
                     for offer in self.matched_skill_offers
                 ]
         }
-
-
-
-
     
     @validates("username")
     def validate_username(self, key, username):
@@ -65,7 +61,7 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(self._password_hash, password)
     
 
-'''---------------------------------------------------------------------------'''
+'''-------------------------------Skill--------------------------------------------'''
 class Skill(db.Model,SerializerMixin):
     __tablename__ = 'skills'  
 
@@ -74,10 +70,27 @@ class Skill(db.Model,SerializerMixin):
 
     offers = db.relationship('SkillOffer',back_populates='skill',cascade="all,delete-orphan")
 
-    serialize_rules=('-offers.skill',)
-    
+    # serialize_rules=('-offers.skill',)
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "offers": [
+                {
+                    "id": offer.id,
+                    "title": offer.title,
+                    "description": offer.description,
+                    "experience_level": offer.experience_level,
+                    "user": {
+                        "id": offer.user.id,
+                        "username": offer.user.username
+                    }
+                }
+                for offer in self.offers
+            ]
+        }
 
-'''---------------------------------------------------------------------------'''
+'''---------------------------------SkillOffer------------------------------------------'''
 class SkillOffer(db.Model,SerializerMixin):
     __tablename__ = 'skill_offers'
 
@@ -95,7 +108,26 @@ class SkillOffer(db.Model,SerializerMixin):
     matches = db.relationship('SkillMatch',back_populates='skill_offer',cascade="all,delete-orphan")
 
     serialize_rules = ('-user.skill_offers','-skill.offers','-matches.skill_offer')
-'''---------------------------------------------------------------------------'''
+    def to_dict(self):
+        return {
+            "id":self.id,
+            "title":self.title,
+            "description":self.description,
+            "experience_level":self.experience_level,
+            "user":
+                {
+                 "id":self.user.id,
+                 "username":self.user.username
+                } if self.user else None,
+            "skill":{
+                "id":self.skill.id,
+                "name":self.skill.name
+                }   
+            
+
+        }
+
+'''-----------------------------------SkillMatch----------------------------------------'''
 class SkillMatch(db.Model,SerializerMixin):
     __tablename__= 'skill_matches'  
 
