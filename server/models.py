@@ -107,7 +107,7 @@ class SkillOffer(db.Model,SerializerMixin):
     skill = db.relationship('Skill',back_populates='offers')
     matches = db.relationship('SkillMatch',back_populates='skill_offer',cascade="all,delete-orphan")
 
-    serialize_rules = ('-user.skill_offers','-skill.offers','-matches.skill_offer')
+    # serialize_rules = ('-user.skill_offers','-skill.offers','-matches.skill_offer')
     def to_dict(self):
         return {
             "id":self.id,
@@ -142,4 +142,26 @@ class SkillMatch(db.Model,SerializerMixin):
     skill_offer = db.relationship('SkillOffer', back_populates='matches')
 
 
-    serialize_rules=('-user.skill_matches','-skill_offer.matches')
+    # serialize_rules=('-user.skill_matches','-skill_offer.matches')
+    def to_dict(self):
+        return {
+            "id":self.id,
+            "user":{
+                "id":self.user.id,
+                "username":self.user.username,  
+            } if self.user else None,
+            "skill_offer":{
+                "id":self.skill_offer.id,
+                "title":self.skill_offer.title,
+                "description":self.skill_offer.description,
+                "experience_level":self.skill_offer.experience_level,
+                "user":{
+                    "id":self.skill_offer.user.id,
+                    "username":self.skill_offer.user.username,
+                } if self.skill_offer.user else None,
+                "skill":{
+                "id":self.skill_offer.skill.id,
+                "name":self.skill_offer.skill.name
+                }if self.skill_offer.skill else None
+            } if self.skill_offer else None
+        }

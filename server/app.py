@@ -38,7 +38,7 @@ class SkillResource(Resource):
             return {"errors":"Skill not found!"}
         return [skill.to_dict() for skill in Skill.query.all()],200
     
-class SkillOfferResource(Resource):
+class OfferResource(Resource):
     def get(self,id=None):
         if id is not None:
             offer = SkillOffer.query.get(id)
@@ -47,12 +47,19 @@ class SkillOfferResource(Resource):
             return {"error":"Offer not found!"} 
         return [offer.to_dict() for offer in SkillOffer.query.all()],200
 
-
+class MatchResource(Resource):
+    def get(self,id=None):
+        if id is not None:
+            match = SkillMatch.query.get(id)
+            if match:
+                return match.to_dict(),200
+            return {"error":"Match not found!"} 
+        return [match.to_dict() for match in SkillMatch.query.all()],200
 
 api.add_resource(UserResource, '/users', '/users/<int:id>')
 api.add_resource(SkillResource,'/skills','/skills/<int:id>')
-api.add_resource(SkillOfferResource,'/offers','/offers/<int:id>')
-
+api.add_resource(OfferResource,'/offers','/offers/<int:id>')
+api.add_resource(MatchResource,'/matches','/matches/<int:id>')
 
 
 if __name__ == '__main__':
