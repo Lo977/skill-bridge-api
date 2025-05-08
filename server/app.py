@@ -40,6 +40,15 @@ class SignupResource(Resource):
             return user.to_dict(),201
         except Exception:
             return {"error":"422 Unprocessable Entity"}, 422
+'''------------------------------------ Login --------------------------------------'''
+class LoginResource(Resource):
+    def post(self):
+        data = request.get_json()
+        user = User.query.filter_by(username=data['username']).first()  
+        if user and user.authenticate(data['password']):
+            session['user_id'] = user.id
+            return user.to_dict(),200
+        return {"error":"Invalid credentials"}, 401
 '''------------------------------------ UserResource --------------------------------------'''
 class UserResource(Resource):
     def get(self, id=None):
@@ -89,6 +98,7 @@ api.add_resource(SkillResource,'/skills','/skills/<int:id>')
 api.add_resource(OfferResource,'/offers','/offers/<int:id>')
 api.add_resource(MatchResource,'/matches','/matches/<int:id>')
 api.add_resource(SignupResource,'/signup')
+api.add_resource(LoginResource,'/login')
 
 
 if __name__ == '__main__':
