@@ -23,6 +23,16 @@ def check_if_logged_in():
 # @app.route('/')
 # def index():
 #     return '<h1>Project Server WELCOME</h1>'
+
+'''------------------------------------ CheckSession --------------------------------------'''
+class CheckSession(Resource):
+    def get(self):
+        user_id = session.get('user_id')
+        if user_id:
+            user = User.query.get(user_id)
+            if user:
+                return user.to_dict(),200
+        return {"error":"Not Logged in"},401
 '''------------------------------------ Signup --------------------------------------'''
 class SignupResource(Resource):
     def post(self):
@@ -49,6 +59,13 @@ class LoginResource(Resource):
             session['user_id'] = user.id
             return user.to_dict(),200
         return {"error":"Invalid credentials"}, 401
+    
+'''------------------------------------ Logout --------------------------------------'''
+class LogoutResource(Resource):
+    def delete(self):
+        session['user_id'] = None
+        return {},204
+
 '''------------------------------------ UserResource --------------------------------------'''
 class UserResource(Resource):
     def get(self, id=None):
@@ -97,8 +114,10 @@ api.add_resource(UserResource, '/users', '/users/<int:id>')
 api.add_resource(SkillResource,'/skills','/skills/<int:id>')
 api.add_resource(OfferResource,'/offers','/offers/<int:id>')
 api.add_resource(MatchResource,'/matches','/matches/<int:id>')
+api.add_resource(CheckSession,'/check_session')
 api.add_resource(SignupResource,'/signup')
 api.add_resource(LoginResource,'/login')
+api.add_resource(LogoutResource,'/logout')
 
 
 if __name__ == '__main__':
