@@ -97,7 +97,20 @@ class OfferResource(Resource):
             return {"error":"Offer not found!"} 
         return [offer.to_dict() for offer in Offer.query.all()],200
     
-    
+    def post(self):
+        data = request.get_json()
+        try:
+            offer = Offer(
+                title = data['title'],
+                description = data['description'],
+                user_id = data['user_id'],
+                skill_id = data['skill_id']
+            )
+            db.session.add(offer)
+            db.session.commit() 
+            return offer.to_dict,201
+        except Exception as e:
+            return {"error":str(e)},422
         
     
 
