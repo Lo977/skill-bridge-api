@@ -112,7 +112,21 @@ class OfferResource(Resource):
         except Exception as e:
             return {"error":str(e)},422
         
-    
+    def patch(self,id=None):
+        offer = Offer.query.filter_by(id=id).first()    
+        if not offer:
+            return {"error":"Offer not found!"},404
+        
+        data = request.get_json()
+        try:
+            for field in ['title','description']:
+                if field in data:
+                    setattr(offer,field,data[field])
+            db.session.commit() 
+            return offer.to_dict(),200
+        except Exception as e:
+            return {"error":str(e)},422
+
 
     
 
