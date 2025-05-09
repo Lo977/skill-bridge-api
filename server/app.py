@@ -11,7 +11,7 @@ from flask_cors import CORS
 from config import app, db, api
 
 # Add your model imports
-from models import User, SkillOffer, SkillMatch,Skill
+from models import User, Offer,Skill
 CORS(app)
 
 # Views go here!
@@ -66,16 +66,6 @@ class LogoutResource(Resource):
         session['user_id'] = None
         return {},204
 
-'''------------------------------------ UserResource --------------------------------------'''
-class UserResource(Resource):
-    def get(self, id=None):
-        if id:
-            user = User.query.get(id)
-            if user:
-                return user.to_dict(), 200
-            return {'error': 'User not found'}, 404
-        return [user.to_dict() for user in User.query.all()], 200
-    
 
 '''------------------------------------ SkillResource --------------------------------------'''
 class SkillResource(Resource):
@@ -87,33 +77,35 @@ class SkillResource(Resource):
             return {"errors":"Skill not found!"}
         return [skill.to_dict() for skill in Skill.query.all()],200
 
+    def post(self):
+        data = request.get_json()
+        try:
+            skill = Skill(name=data['name'])
+            db.session.add(skill)   
+            db.session.commit() 
+            return skill.to_dict(),201
+        except Exception as e:
+            return {"error":str(e)},422 
+
 '''------------------------------------ OfferResource --------------------------------------'''  
 class OfferResource(Resource):
     def get(self,id=None):
         if id is not None:
-            offer = SkillOffer.query.get(id)
+            offer = Offer.query.get(id)
             if offer:
                 return offer.to_dict(),200
             return {"error":"Offer not found!"} 
-        return [offer.to_dict() for offer in SkillOffer.query.all()],200
+        return [offer.to_dict() for offer in Offer.query.all()],200
+    
+    
+        
     
 
-'''------------------------------------ MatchResource --------------------------------------'''  
-class MatchResource(Resource):
-    def get(self,id=None):
-        if id is not None:
-            match = SkillMatch.query.get(id)
-            if match:
-                return match.to_dict(),200
-            return {"error":"Match not found!"} 
-        return [match.to_dict() for match in SkillMatch.query.all()],200
     
 
-'''------------------------------------ Routes --------------------------------------'''  
-api.add_resource(UserResource, '/users', '/users/<int:id>')
+'''------------------------------------ Routes --------------------------------------''' 
 api.add_resource(SkillResource,'/skills','/skills/<int:id>')
 api.add_resource(OfferResource,'/offers','/offers/<int:id>')
-api.add_resource(MatchResource,'/matches','/matches/<int:id>')
 api.add_resource(CheckSession,'/check_session')
 api.add_resource(SignupResource,'/signup')
 api.add_resource(LoginResource,'/login')
