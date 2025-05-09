@@ -126,7 +126,14 @@ class OfferResource(Resource):
             return offer.to_dict(),200
         except Exception as e:
             return {"error":str(e)},422
-
+        
+    def delete(self,id):
+        offer = Offer.query.get(id)
+        if not offer:
+            return {"error":"Offer not found!"},404
+        db.session.delete(offer)
+        db.session.commit()
+        return {},204
 
     
 
