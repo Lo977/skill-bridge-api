@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-// import "../styles/Auth.css"; // Same as used in Login
 
 function Signup({ onLogin }) {
   const navigate = useNavigate();
@@ -12,6 +11,7 @@ function Signup({ onLogin }) {
       username: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Username is required"),
@@ -19,20 +19,27 @@ function Signup({ onLogin }) {
       password: Yup.string()
         .min(6, "Password must be at least 6 characters")
         .required("Password is required"),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .required("Please confirm your password"),
     }),
     onSubmit: (values, { setSubmitting, setStatus }) => {
+      const { confirmPassword, ...signupData } = values;
+
       fetch("/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify(signupData),
       })
         .then((res) => {
           if (!res.ok) throw new Error("Signup failed");
           return res.json();
         })
         .then((user) => {
-          onLogin(user);
-          navigate("/");
+          if (typeof onLogin === "function") {
+            onLogin(user);
+            navigate("/");
+          }
         })
         .catch((err) => {
           setStatus(err.message || "Something went wrong");
@@ -75,6 +82,16 @@ function Signup({ onLogin }) {
         <p className="error-message">{formik.errors.password}</p>
       )}
 
+      <input
+        name="confirmPassword"
+        type="password"
+        placeholder="Confirm Password"
+        {...formik.getFieldProps("confirmPassword")}
+      />
+      {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+        <p className="error-message">{formik.errors.confirmPassword}</p>
+      )}
+
       {formik.status && <p className="error-message">{formik.status}</p>}
 
       <button
@@ -82,7 +99,7 @@ function Signup({ onLogin }) {
         className="auth-button"
         disabled={formik.isSubmitting}
       >
-        {formik.isSubmitting ? "Creating account..." : "Sign Up"}
+        {formik.isSubmitting ? "Signing up..." : "Sign Up"}
       </button>
     </form>
   );

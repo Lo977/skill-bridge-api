@@ -1,10 +1,12 @@
 import React from "react";
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 // import { useHistory } from "react-router-dom";
 
 function LoginForm({ onLogin }) {
   //   const history = useHistory();
+  const navigate = useNavigate();
 
   const initialValues = {
     username: "",
@@ -28,7 +30,6 @@ function LoginForm({ onLogin }) {
       if (r.ok) {
         r.json().then((user) => {
           onLogin(user);
-          //   history.push("/");
         });
       } else {
         r.json().then((err) => {
