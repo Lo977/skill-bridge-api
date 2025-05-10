@@ -40,7 +40,6 @@ function LoginForm({ onLogin }) {
 
   return (
     <div>
-      <h2>Login</h2>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

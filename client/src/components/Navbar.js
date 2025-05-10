@@ -1,20 +1,31 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-function Navbar({ onLogin, user }) {
+function Navbar({ setUser, user }) {
+  function handleLogout() {
+    fetch("/logout", {
+      method: "DELETE",
+    }).then((r) => {
+      if (r.ok) {
+        setUser(null);
+      }
+    });
+  }
   return (
     <>
       <li>
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to={`users/${user.id}`}>User</NavLink>
+        <NavLink to="/users">User</NavLink>
       </li>
       <li>
         <NavLink to="/skills">Skills</NavLink>
       </li>
       <li>
-        <NavLink to="#">Logout</NavLink>
+        <NavLink to="/" onClick={handleLogout}>
+          Logout
+        </NavLink>
       </li>
     </>
   );
