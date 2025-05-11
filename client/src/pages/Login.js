@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import LoginForm from "../components/LoginForm";
 import Signup from "./Signup";
 import { useNavigate } from "react-router-dom";
-import "../styles/Login.css";
+import "../styles/Login.css"; // Ensure styles apply to both login/signup layout
 
 function Login({ onLogin }) {
   const [showLogin, setShowLogin] = useState(true);
   const navigate = useNavigate();
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
+    <div className="login-page-container">
+      <div className="login-card">
         {showLogin ? (
           <>
             <h2 className="auth-title">Welcome Back</h2>
@@ -33,14 +33,7 @@ function Login({ onLogin }) {
             <Signup onLogin={onLogin} />
             <div className="auth-switch">
               <span>Already have an account?</span>
-              <div className="auth-button-wrapper">
-                <button
-                  className="auth-button"
-                  onClick={() => setShowLogin(true)}
-                >
-                  Log In
-                </button>
-              </div>
+              <button onClick={() => setShowLogin(true)}>Log In</button>
             </div>
           </>
         )}
