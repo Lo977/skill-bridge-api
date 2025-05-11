@@ -1,0 +1,65 @@
+/* Navbar.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(90deg, #121212, #1f1f2e, #2c2c3a);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #e0e0e0;
+  font-weight: 500;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+  padding: 0.3rem 0;
+}
+
+.navbar a:hover {
+  color: #6c63ff;
+}
+
+.navbar a.active {
+  border-bottom: 2px solid #6c63ff;
+  color: #ffffff;
+}
+
+.navbar .user-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar .user-controls span {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.navbar .user-controls button {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  background-color: #6c63ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navbar .user-controls button:hover {
+  background-color: #7d75ff;
+}
