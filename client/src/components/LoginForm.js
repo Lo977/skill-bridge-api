@@ -2,10 +2,9 @@ import React from "react";
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-// import { useHistory } from "react-router-dom";
+import "../styles/LoginForm.css";
 
 function LoginForm({ onLogin }) {
-  //   const history = useHistory();
   const navigate = useNavigate();
 
   const initialValues = {
@@ -21,15 +20,14 @@ function LoginForm({ onLogin }) {
   function handleSubmit(values, { setSubmitting, setErrors }) {
     fetch("/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     }).then((r) => {
       setSubmitting(false);
       if (r.ok) {
         r.json().then((user) => {
           onLogin(user);
+          navigate("/"); // redirect after login
         });
       } else {
         r.json().then((err) => {
@@ -40,7 +38,7 @@ function LoginForm({ onLogin }) {
   }
 
   return (
-    <div>
+    <div className="login-form-container">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -49,27 +47,35 @@ function LoginForm({ onLogin }) {
         {({ errors, isSubmitting }) => (
           <Form>
             <div>
-              <label htmlFor="username">Username</label>
-              <Field type="text" id="username" name="username" />
+              <Field
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Username"
+              />
               <ErrorMessage
                 name="username"
                 component="div"
-                style={{ color: "red" }}
+                className="error-message"
               />
             </div>
 
             <div>
-              <label htmlFor="password">Password</label>
-              <Field type="password" id="password" name="password" />
+              <Field
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+              />
               <ErrorMessage
                 name="password"
                 component="div"
-                style={{ color: "red" }}
+                className="error-message"
               />
             </div>
 
             {errors.general && (
-              <div style={{ color: "red" }}>{errors.general}</div>
+              <div className="error-general">{errors.general}</div>
             )}
 
             <button type="submit" disabled={isSubmitting}>

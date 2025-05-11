@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import OfferSkillForm from "../components/OfferSkillForm";
-import EditOfferForm from "../components/EditOfferForm";
+import OfferCard from "../components/OfferCard";
+import AddCategoryForm from "../components/AddCategoryForm";
+import "../styles/Offer.css";
 
 function Offer({ user }) {
   const [offers, setOffers] = useState([]);
   const [skills, setSkills] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [activeSkill, setActiveSkill] = useState(null);
   const [editingOfferId, setEditingOfferId] = useState(null);
   const { id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/skills")
@@ -46,19 +48,19 @@ function Offer({ user }) {
       offer.id === updatedOffer.id ? updatedOffer : offer
     );
     setOffers(updatedOffers);
-    navigate("/offers");
+    setEditingOfferId(null);
   }
 
-  return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Your Skill Offers</h2>
+  const offersBySkill = offers.reduce((acc, offer) => {
+    const skill = offer.skill?.name || "Uncategorized";
+    if (!acc[skill]) acc[skill] = [];
+    acc[skill].push(offer);
+    return acc;
+  }, {});
 
-      <button
-        onClick={() => setShowForm(!showForm)}
-        style={{ marginBottom: "1rem" }}
-      >
-        {showForm ? "Cancel" : "Offer Skill"}
-      </button>
+  return (
+    <div className="offer-container">
+      <AddCategoryForm setSkills={setSkills} skills={skills} />
 
       {showForm && (
         <OfferSkillForm
@@ -68,45 +70,42 @@ function Offer({ user }) {
         />
       )}
 
-      {Object.entries(
-        offers.reduce((groups, offer) => {
-          const skillName = offer.skill?.name || "Uncategorized";
-          if (!groups[skillName]) groups[skillName] = [];
-          groups[skillName].push(offer);
-          return groups;
-        }, {})
-      ).map(([skillName, skillOffers]) => (
-        <div key={skillName} style={{ marginBottom: "1.5rem" }}>
-          <h4>{skillName}</h4>
-          <ul>
-            {skillOffers.map((offer) => (
-              <li key={offer.id} style={{ marginBottom: "1rem" }}>
-                {parseInt(id) === offer.id ? (
-                  <EditOfferForm
-                    offer={offer}
-                    onCancel={() => navigate("/offers")}
-                    onUpdate={handleEdit}
-                  />
-                ) : (
-                  <>
-                    <strong>{offer.title}</strong> – {offer.description}
-                    <br />
-                    <button
-                      onClick={() => handleDelete(offer.id)}
-                      style={{ marginRight: "0.5rem", color: "red" }}
-                    >
-                      Delete
-                    </button>
-                    <button onClick={() => navigate(`/offers/${offer.id}`)}>
-                      Edit
-                    </button>
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <div className="offer-header">
+        <h2>Your Offers</h2>
+        <button
+          className="offer-form-toggle"
+          onClick={() => setShowForm(!showForm)}
+        >
+          {showForm ? "Cancel" : "Offer Skill"}
+        </button>
+      </div>
+
+      {offers.length === 0 ? (
+        <p className="category-message">
+          You have no skill offers yet. Start by adding one!
+        </p>
+      ) : (
+        Object.entries(offersBySkill).map(([skillName, skillOffers]) => (
+          <div className="offer-section" key={skillName}>
+            <OfferCard
+              skillName={skillName}
+              // onNavigate={navigate}
+              offers={skillOffers}
+              user={user}
+              skills={skills}
+              isActive={activeSkill === skillName}
+              onClick={() =>
+                setActiveSkill(activeSkill === skillName ? null : skillName)
+              }
+              editId={editingOfferId}
+              setEditingOfferId={setEditingOfferId}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              onAddOffer={handleAddOffer}
+            />
+          </div>
+        ))
+      )}
     </div>
   );
 }

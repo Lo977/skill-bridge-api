@@ -1,107 +1,111 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import "../styles/Signup.css";
 
 function Signup({ onLogin }) {
   const navigate = useNavigate();
 
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Username is required"),
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      password: Yup.string()
-        .min(6, "Password must be at least 6 characters")
-        .required("Password is required"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
-        .required("Please confirm your password"),
-    }),
-    onSubmit: (values, { setSubmitting, setStatus }) => {
-      const { confirmPassword, ...signupData } = values;
-
-      fetch("/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(signupData),
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("Signup failed");
-          return res.json();
-        })
-        .then((user) => {
-          if (typeof onLogin === "function") {
-            onLogin(user);
-            navigate("/");
-          }
-        })
-        .catch((err) => {
-          setStatus(err.message || "Something went wrong");
-        })
-        .finally(() => {
-          setSubmitting(false);
-        });
-    },
+  const validationSchema = Yup.object({
+    username: Yup.string().required("Username is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Please confirm your password"),
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="auth-form">
-      <input
-        name="username"
-        type="text"
-        placeholder="Username"
-        {...formik.getFieldProps("username")}
-      />
-      {formik.touched.username && formik.errors.username && (
-        <p className="error-message">{formik.errors.username}</p>
-      )}
+    <div className="signup-container">
+      <h2 className="auth-title">Create Your Account</h2>
 
-      <input
-        name="email"
-        type="email"
-        placeholder="Email"
-        {...formik.getFieldProps("email")}
-      />
-      {formik.touched.email && formik.errors.email && (
-        <p className="error-message">{formik.errors.email}</p>
-      )}
+      <Formik
+        initialValues={{
+          username: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting, setStatus }) => {
+          const { confirmPassword, ...signupData } = values;
 
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        {...formik.getFieldProps("password")}
-      />
-      {formik.touched.password && formik.errors.password && (
-        <p className="error-message">{formik.errors.password}</p>
-      )}
-
-      <input
-        name="confirmPassword"
-        type="password"
-        placeholder="Confirm Password"
-        {...formik.getFieldProps("confirmPassword")}
-      />
-      {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-        <p className="error-message">{formik.errors.confirmPassword}</p>
-      )}
-
-      {formik.status && <p className="error-message">{formik.status}</p>}
-
-      <button
-        type="submit"
-        className="auth-button"
-        disabled={formik.isSubmitting}
+          fetch("/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(signupData),
+          })
+            .then((res) => {
+              if (!res.ok) throw new Error("Signup failed");
+              return res.json();
+            })
+            .then((user) => {
+              onLogin(user);
+              navigate("/");
+            })
+            .catch((err) => {
+              setStatus(err.message || "Something went wrong");
+            })
+            .finally(() => {
+              setSubmitting(false);
+            });
+        }}
       >
-        {formik.isSubmitting ? "Signing up..." : "Sign Up"}
-      </button>
-    </form>
+        {({ isSubmitting, status }) => (
+          <Form className="auth-form">
+            <Field name="username" type="text" placeholder="Username" />
+            <ErrorMessage
+              name="username"
+              component="div"
+              className="error-message"
+            />
+
+            <Field name="email" type="email" placeholder="Email" />
+            <ErrorMessage
+              name="email"
+              component="div"
+              className="error-message"
+            />
+
+            <Field name="password" type="password" placeholder="Password" />
+            <ErrorMessage
+              name="password"
+              component="div"
+              className="error-message"
+            />
+
+            <Field
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirm Password"
+            />
+            <ErrorMessage
+              name="confirmPassword"
+              component="div"
+              className="error-message"
+            />
+
+            {status && <div className="error-message">{status}</div>}
+
+            <button
+              type="submit"
+              className="auth-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Signing up..." : "Sign Up"}
+            </button>
+          </Form>
+        )}
+      </Formik>
+
+      <div className="auth-switch">
+        <span>Already have an account?</span>
+        <button onClick={() => navigate("/login")}>Log In</button>
+      </div>
+    </div>
   );
 }
 

@@ -1,0 +1,101 @@
+/* Offer.css */
+
+.offer-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: #1e1e2f;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  color: #e0e0e0;
+}
+
+.offer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.offer-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: #8a05d6;
+}
+
+.offer-form-toggle {
+  background-color: #6c63ff;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.offer-form-toggle:hover {
+  background-color: #837cff;
+}
+
+.category-message {
+  font-size: 1.1rem;
+  color: #bbbbbb;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.offer-section {
+  margin-top: 2rem;
+}
+
+.skill-category {
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.skill-category:hover {
+  color: #6c63ff;
+}
+
+.skill-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 2rem;
+}
+
+.skill-list li {
+  background-color: #2a2a3c;
+  border: 1px solid #3a3a4d;
+  border-radius: 8px;
+  padding: 0.85rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.skill-list button {
+  margin-right: 0.5rem;
+  background-color: #22c55e;
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.skill-list button:hover {
+  background-color: #16a34a;
+}
+
+.skill-list .delete-button {
+  background-color: #ef4444;
+}
+
+.skill-list .delete-button:hover {
+  background-color: #dc2626;
+}
