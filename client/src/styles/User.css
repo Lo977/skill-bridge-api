@@ -1,0 +1,35 @@
+.user-profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  padding: 2rem;
+  background: linear-gradient(to right, #0f172a, #1e293b);
+  color: #f1f5f9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.user-profile-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.user-profile-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #38bdf8;
+}
+
+.user-profile-detail,
+.user-profile-id {
+  font-size: 1.1rem;
+  margin-top: 0.75rem;
+  color: #cbd5e1;
+}
