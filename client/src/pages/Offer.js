@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import OfferSkillForm from "../components/OfferSkillForm";
 import OfferCard from "../components/OfferCard";
 import AddCategoryForm from "../components/AddCategoryForm";
@@ -11,8 +11,18 @@ function Offer({ user }) {
   const [showForm, setShowForm] = useState(false);
   const [activeSkill, setActiveSkill] = useState(null);
   const [editingOfferId, setEditingOfferId] = useState(null);
-  const { id } = useParams();
 
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  // Sync editing ID with route param
+  useEffect(() => {
+    if (id) {
+      setEditingOfferId(parseInt(id));
+    }
+  }, [id]);
+
+  // Load skills and offers
   useEffect(() => {
     fetch("/skills")
       .then((r) => r.json())
@@ -49,6 +59,7 @@ function Offer({ user }) {
     );
     setOffers(updatedOffers);
     setEditingOfferId(null);
+    navigate("/offers");
   }
 
   const offersBySkill = offers.reduce((acc, offer) => {
@@ -88,8 +99,8 @@ function Offer({ user }) {
         Object.entries(offersBySkill).map(([skillName, skillOffers]) => (
           <div className="offer-section" key={skillName}>
             <OfferCard
+              onAddOffer={handleAddOffer}
               skillName={skillName}
-              // onNavigate={navigate}
               offers={skillOffers}
               user={user}
               skills={skills}
@@ -101,7 +112,6 @@ function Offer({ user }) {
               setEditingOfferId={setEditingOfferId}
               onDelete={handleDelete}
               onEdit={handleEdit}
-              onAddOffer={handleAddOffer}
             />
           </div>
         ))

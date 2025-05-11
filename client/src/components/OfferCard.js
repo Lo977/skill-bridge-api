@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import EditOfferForm from "./EditOfferForm";
 import OfferSkillForm from "./OfferSkillForm";
 import "../styles/OfferCard.css";
@@ -15,8 +16,8 @@ function OfferCard({
 }) {
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [showFormForCategory, setShowFormForCategory] = useState(null);
+  const navigate = useNavigate();
 
-  // Debugging: Log offers to check if id is missing
   useEffect(() => {
     console.log("Offers data:", offers);
   }, [offers]);
@@ -50,8 +51,7 @@ function OfferCard({
                 <ul className="offer-list">
                   {skillOffers.map((offer) => (
                     <li key={offer.id || Math.random()}>
-                      {/* Ensure editId is compared as a number */}
-                      {parseInt(editId, 10) === offer.id ? (
+                      {parseInt(editId, 10) === offer.id && offer ? (
                         <EditOfferForm
                           offer={offer}
                           onCancel={() => setEditingOfferId(null)}
@@ -65,7 +65,12 @@ function OfferCard({
                             <button onClick={() => onDelete(offer.id)}>
                               Delete
                             </button>
-                            <button onClick={() => setEditingOfferId(offer.id)}>
+                            <button
+                              onClick={() => {
+                                setEditingOfferId(offer.id);
+                                navigate(`/offers/${offer.id}`);
+                              }}
+                            >
                               Edit
                             </button>
                           </div>

@@ -4,6 +4,8 @@ import "../styles/EditOfferForm.css";
 import * as Yup from "yup";
 
 function EditOfferForm({ offer, onUpdate, onCancel }) {
+  if (!offer) return null; // Prevent rendering if offer is not ready
+
   function handleSubmit(values, { setSubmitting }) {
     fetch(`/offers/${offer.id}`, {
       method: "PATCH",
