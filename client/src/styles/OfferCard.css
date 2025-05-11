@@ -1,0 +1,91 @@
+/* OfferCard.css */
+
+.offer-category {
+  margin-bottom: 1.5rem;
+  border: 1px solid #3a3a4d;
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #2a2a3c;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.offer-category h4 {
+  cursor: pointer;
+  color: #6c63ff;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.offer-category h4:hover {
+  color: #837cff;
+}
+
+.offer-list {
+  list-style: none;
+  padding-left: 1rem;
+  margin-top: 0;
+}
+
+.offer-list li {
+  margin-bottom: 1.2rem;
+  background-color: #1f1f2e;
+  border: 1px solid #44475a;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.offer-list strong {
+  font-weight: 600;
+  color: #f1f1f1;
+}
+
+.offer-buttons {
+  margin-top: 0.5rem;
+}
+
+.offer-buttons button {
+  padding: 0.45rem 0.9rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.offer-buttons button:first-child {
+  background-color: #ef5350;
+  color: white;
+}
+
+.offer-buttons button:first-child:hover {
+  background-color: #c62828;
+}
+
+.offer-buttons button:last-child {
+  background-color: #42a5f5;
+  color: white;
+}
+
+.offer-buttons button:last-child:hover {
+  background-color: #1e88e5;
+}
+
+.add-offer-button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.add-offer-button:hover {
+  background-color: #16a34a;
+}
