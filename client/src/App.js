@@ -17,7 +17,7 @@ function App() {
     <>
       <Navbar onLogout={setUser} user={user} />
       <Login onLogin={setUser} />
-      <Signup />
+      <Signup onLogin={setUser} />
       <h2>App</h2>
     </>
   );

@@ -40,14 +40,14 @@ function Login({ onLogin }) {
         <Form>
           <Field
             type="text"
-            id="username"
+            // id="username"
             name="username"
             placeholder="username"
           />
           <ErrorMessage name="username" component="div" />
           <Field
             type="password"
-            id="password"
+            // id="password"
             name="password"
             placeholder="password"
           />
