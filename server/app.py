@@ -9,7 +9,14 @@ from models import User, Offer, Skill
 CORS(app)
 
 
-
+class CheckSession(Resource):
+    def get(self):
+        user_id = session.get("user_id")
+        if not user_id:
+            return {"error":"Not logged in "},401
+        user = db.session.get(User,user_id)
+        return user.to_dict(),200
+    
     
 class Singup(Resource):
     def post(self):
@@ -43,7 +50,7 @@ class Logout(Resource):
     
 
 
-
+api.add_resource(CheckSession,"/check_session")
 api.add_resource(Singup,"/signup")
 api.add_resource(Login,"/login")
 api.add_resource(Logout,"/logout")
