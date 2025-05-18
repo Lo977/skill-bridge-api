@@ -1,13 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-function Navbar({ setUser, user }) {
+function Navbar({ onLogout, user }) {
   function handleLogout() {
     fetch("/logout", {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {
-        setUser(null);
+        onLogout(null);
       }
     });
   }
@@ -27,8 +27,8 @@ function Navbar({ setUser, user }) {
         <li>
           {/* <NavLink to={`/users/${user.id}`}>{user.username}</NavLink> */}
         </li>
-        <button onClick={handleLogout}>Logout</button>
       </ul>
+      <button onClick={handleLogout}>Logout</button>
     </nav>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -13,7 +14,8 @@ function App() {
   }, []);
   return (
     <>
-      <Navbar setUser={setUser} user={user} />
+      <Navbar onLogout={setUser} user={user} />
+      <Login onLogin={setUser} />
       <h2>App</h2>
     </>
   );
