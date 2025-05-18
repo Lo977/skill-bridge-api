@@ -24,11 +24,13 @@ function Navbar({ onLogout, user }) {
         <li>
           <NavLink to="/skills">Skills</NavLink>
         </li>
-        <li>
-          {/* <NavLink to={`/users/${user.id}`}>{user.username}</NavLink> */}
-        </li>
       </ul>
-      <button onClick={handleLogout}>Logout</button>
+      {user && (
+        <div>
+          <NavLink to={`/users/${user.id}`}>{user.username}</NavLink>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      )}
     </nav>
   );
 }
