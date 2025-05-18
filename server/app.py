@@ -10,6 +10,7 @@ CORS(app)
 
 
 
+    
 class Singup(Resource):
     def post(self):
         data = request.get_json()   
@@ -35,9 +36,18 @@ class Login(Resource):
         return {"error":"Invalid username or password"},401
 
 
+class Logout(Resource):
+    def delete(self):
+        session["user_id"]=None
+        return {},204
+    
+
+
 
 api.add_resource(Singup,"/signup")
 api.add_resource(Login,"/login")
+api.add_resource(Logout,"/logout")
+
 
 
     
