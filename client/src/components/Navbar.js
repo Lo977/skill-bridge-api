@@ -1,6 +1,7 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-function Navbar({ setUser }) {
+function Navbar({ setUser, user }) {
   function handleLogout() {
     fetch("/logout", {
       method: "DELETE",
@@ -10,10 +11,25 @@ function Navbar({ setUser }) {
       }
     });
   }
+
   return (
-    <>
-      <button onClick={handleLogout}>Logout</button>
-    </>
+    <nav>
+      <ul>
+        <li>
+          <NavLink>Home</NavLink>
+        </li>
+        <li>
+          <NavLink to="/offers">My Offers</NavLink>
+        </li>
+        <li>
+          <NavLink to="/skills">Skills</NavLink>
+        </li>
+        <li>
+          {/* <NavLink to={`/users/${user.id}`}>{user.username}</NavLink> */}
+        </li>
+        <button onClick={handleLogout}>Logout</button>
+      </ul>
+    </nav>
   );
 }
 

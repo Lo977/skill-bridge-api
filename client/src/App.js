@@ -13,7 +13,7 @@ function App() {
   }, []);
   return (
     <>
-      <Navbar setUser={setUser} />
+      <Navbar setUser={setUser} user={user} />
       <h2>App</h2>
     </>
   );
