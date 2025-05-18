@@ -27,7 +27,7 @@ function Navbar({ onLogout, user }) {
       </ul>
       {user && (
         <div>
-          <NavLink to={`/users/${user.id}`}>{user.username}</NavLink>
+          <NavLink to={`/users/${user.username}`}>{user.username}</NavLink>
           <button onClick={handleLogout}>Logout</button>
         </div>
       )}
