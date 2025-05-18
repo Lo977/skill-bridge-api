@@ -14,9 +14,11 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String, nullable=False, unique=True)
     _password_hash = db.Column(db.String, nullable=False)
 
-    skill_offers = db.relationship("Offer", back_populates="user", cascade="all, delete-orphan")
+    offers = db.relationship("Offer", back_populates="user", cascade="all, delete-orphan")
+    skills = association_proxy("offers", "skill",
+                               creator=lambda skill: Offer(skill=skill))
 
-    serialize_rules = ("-_password_hash", "-skill_offers.user")
+    # serialize_rules = ("-_password_hash", "-offers.user")
 
     @property
     def password_hash(self):
@@ -34,10 +36,31 @@ class User(db.Model, SerializerMixin):
         if not value:
             raise ValueError("Username is required")
         return value
-        return bcrypt.check_password_hash(self._password_hash, password)
     
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            # "offers": [offer.to_dict(include_user=True) for offer in self.offers],
+            "skills": list({
+                offer.skill.id: {
+                    "id": offer.skill.id,
+                    "name": offer.skill.name,
+                    "offers": [
+                        o.to_dict()
+                        for o in offer.skill.offers
+                        if o.user_id == self.id
+                    ]
+                } for offer in self.offers if offer.skill
+            }.values())
+        }
 
-'''-------------------------------Skill--------------------------------------------'''
+
+
+    def __repr__(self):
+        return f'Username: {self.username}, Email:{self.email} Id : {self.id}'
+# ------------------ Skill ------------------
 class Skill(db.Model, SerializerMixin):
     __tablename__ = "skills"
 
@@ -45,11 +68,19 @@ class Skill(db.Model, SerializerMixin):
     name = db.Column(db.String(45), nullable=False, unique=True)
 
     offers = db.relationship("Offer", back_populates="skill", cascade="all, delete-orphan")
+    
 
     serialize_rules = ("-offers.skill",)
 
+    # def to_dict(self):
+    #     return {
+    #         "id": self.id,
+    #         "name": self.name
+    #     }
 
-'''---------------------------------SkillOffer------------------------------------------'''
+    def __repr__(self):
+        return f'Skill Name : {self.name} Id :{self.id}'
+# ------------------ Offer (Association Model) ------------------
 class Offer(db.Model, SerializerMixin):
     __tablename__ = "offers"
 
@@ -58,9 +89,36 @@ class Offer(db.Model, SerializerMixin):
     description = db.Column(db.Text, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    user = db.relationship("User", back_populates="skill_offers")
-
     skill_id = db.Column(db.Integer, db.ForeignKey("skills.id"), nullable=False)
+
+    user = db.relationship("User", back_populates="offers")
     skill = db.relationship("Skill", back_populates="offers")
 
-    serialize_rules = ("-user.skill_offers", "-skill.offers")
+    # serialize_rules = ("-user.offers", "-skill.offers")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "skill_id": self.skill_id,
+            "user_id": self.user_id,
+        }
+
+        # if self.skill:
+        #     data["skill"] = {
+        #         "id": self.skill.id,
+        #         "name": self.skill.name
+        #     }
+
+        # if include_user and self.user:
+        #     data["user"] = {
+        #         "id": self.user.id,
+        #         "username": self.user.username,
+        #         "email": self.user.email
+        #     }
+
+        # return data
+
+    def __repr__(self):
+        return f'Title : {self.title} Description : {self.description} Id : {self.id}'
