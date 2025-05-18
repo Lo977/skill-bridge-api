@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Navbar from "./components/Navbar";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -12,7 +13,11 @@ function App() {
   }, []);
   return (
     <>
-      <h2>App</h2>
+      <Navbar />
+      <h2>
+        App
+        <button onClick={() => setUser(null)}>Logout</button>
+      </h2>
     </>
   );
 }
