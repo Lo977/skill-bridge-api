@@ -13,11 +13,8 @@ function App() {
   }, []);
   return (
     <>
-      <Navbar />
-      <h2>
-        App
-        <button onClick={() => setUser(null)}>Logout</button>
-      </h2>
+      <Navbar setUser={setUser} />
+      <h2>App</h2>
     </>
   );
 }
