@@ -16,10 +16,7 @@ function App() {
   }, []);
   return (
     <>
-      <Navbar onLogout={setUser} user={user} />
-      {/* <Login onLogin={setUser} />
-      <Signup onLogin={setUser} /> */}
-      <h2>App</h2>
+      {user && <Navbar onLogout={setUser} user={user} />}
       <AppRoutes user={user} onLogin={setUser} />
     </>
   );
