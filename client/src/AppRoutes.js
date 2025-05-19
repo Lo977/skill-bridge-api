@@ -3,6 +3,7 @@ import React from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Skills from "./pages/Skills";
 
 function AppRoutes({ user, onLogin }) {
   return (
@@ -10,6 +11,7 @@ function AppRoutes({ user, onLogin }) {
       {user ? (
         <>
           <Route path="/" element={<Home />} />
+          <Route path="/skills" element={<Skills />} />
           <Route path="*" element={<Navigate to="/" />} />
         </>
       ) : (

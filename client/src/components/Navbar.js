@@ -16,7 +16,7 @@ function Navbar({ onLogout, user }) {
     <nav>
       <ul>
         <li>
-          <NavLink>Home</NavLink>
+          <NavLink to="/">Home</NavLink>
         </li>
         <li>
           <NavLink to="/offers">My Offers</NavLink>
