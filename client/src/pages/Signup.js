@@ -1,8 +1,10 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Signup({ onLogin }) {
+  const navigate = useNavigate();
   const initialVallues = {
     username: "",
     email: "",
@@ -58,6 +60,8 @@ function Signup({ onLogin }) {
           <button type="submit">Sign Up</button>
         </Form>
       </Formik>
+      <span>Already have an account?</span>
+      <button onClick={() => navigate("/login")}>Log in</button>
     </div>
   );
 }
