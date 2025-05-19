@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Skills from "./pages/Skills";
+import Offer from "./pages/Offer";
 
 function AppRoutes({ user, onLogin }) {
   return (
@@ -12,6 +13,7 @@ function AppRoutes({ user, onLogin }) {
         <>
           <Route path="/" element={<Home />} />
           <Route path="/skills" element={<Skills />} />
+          <Route path="/offers/:id?" element={<Offer user={user} />} />
           <Route path="*" element={<Navigate to="/" />} />
         </>
       ) : (
