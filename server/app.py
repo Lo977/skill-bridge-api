@@ -48,13 +48,15 @@ class Logout(Resource):
         session["user_id"]=None
         return {},204
     
-
+class SkillResource(Resource):
+    def get(self):
+        return [skill.to_dict() for skill in Skill.query.all()],200
 
 api.add_resource(CheckSession,"/check_session")
 api.add_resource(Singup,"/signup")
 api.add_resource(Login,"/login")
 api.add_resource(Logout,"/logout")
-
+api.add_resource(SkillResource,"/skills")
 
 
     

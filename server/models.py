@@ -70,13 +70,13 @@ class Skill(db.Model, SerializerMixin):
     offers = db.relationship("Offer", back_populates="skill", cascade="all, delete-orphan")
     
 
-    serialize_rules = ("-offers.skill",)
+    # serialize_rules = ("-offers.skill",)
 
-    # def to_dict(self):
-    #     return {
-    #         "id": self.id,
-    #         "name": self.name
-    #     }
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
 
     def __repr__(self):
         return f'Skill Name : {self.name} Id :{self.id}'
