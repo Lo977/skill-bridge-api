@@ -4,6 +4,7 @@ import OfferCard from "../components/OfferCard";
 
 function Offer({ user, setUser }) {
   const { id } = useParams();
+
   function handleDelete(id) {
     fetch(`/offers/${id}`, {
       method: "DELETE",
@@ -21,10 +22,26 @@ function Offer({ user, setUser }) {
     });
   }
   console.log(user);
+  function handleEdit(updatedOffer) {
+    const updatedSkills = user.skills.map((skill) =>
+      skill.id === updatedOffer.skill_id
+        ? {
+            ...skill,
+            offers: skill.offers.map((offer) =>
+              offer.id === updatedOffer.id ? updatedOffer : offer
+            ),
+          }
+        : skill
+    );
+
+    setUser({ ...user, skills: updatedSkills });
+    // setEditingOfferId(null);
+  }
+
   return (
     <div>
       Offers
-      <OfferCard user={user} onDelete={handleDelete} />
+      <OfferCard user={user} onDelete={handleDelete} onEdit={handleEdit} />
     </div>
   );
 }
