@@ -13,7 +13,10 @@ function AppRoutes({ user, onLogin }) {
         <>
           <Route path="/" element={<Home />} />
           <Route path="/skills" element={<Skills />} />
-          <Route path="/offers/:id?" element={<Offer user={user} />} />
+          <Route
+            path="/offers/:id?"
+            element={<Offer user={user} setUser={onLogin} />}
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </>
       ) : (

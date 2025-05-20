@@ -51,12 +51,25 @@ class Logout(Resource):
 class SkillResource(Resource):
     def get(self):
         return [skill.to_dict() for skill in Skill.query.all()],200
-
+class OfferResource(Resource):
+    def get(self,id=None):
+        if id in None:
+            offers = Offer.query.all()
+            return[offer.to_dict() for offer in offers],200
+        else:
+            offer = Offer.query.filter_by(id=id).first()    
+            return offer.to_dict(),200
+    def delete(self,id):
+        offer = Offer.query.get(id) 
+        db.session.delete(offer)
+        db.session.commit()
+        return {},204
 api.add_resource(CheckSession,"/check_session")
 api.add_resource(Singup,"/signup")
 api.add_resource(Login,"/login")
 api.add_resource(Logout,"/logout")
 api.add_resource(SkillResource,"/skills")
+api.add_resource(OfferResource,"/offers","/offers/<int:id>")
 
 
     
