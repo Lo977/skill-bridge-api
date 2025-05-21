@@ -16,11 +16,11 @@ function OfferCard({
   const [showForm, setShowForm] = useState(false);
   const [showFormForCategory, setShowFormForCategory] = useState(null);
   const [editingOfferId, setEditingOfferId] = useState(null);
-  console.log(showFormForCategory);
+  // console.log(showFormForCategory);
   const navigate = useNavigate();
-  console.log(expandCategory);
+  console.log(skills);
   const renderedOffers = user.skills.map((skill) => {
-    const selectedSkill = skills.find((s) => s.id === skill.id);
+    const selectedSkill = skills.find((s) => s.id === skill.id) || null;
     return (
       <div>
         <h4

@@ -51,6 +51,14 @@ class Logout(Resource):
 class SkillResource(Resource):
     def get(self):
         return [skill.to_dict() for skill in Skill.query.all()],200
+    def post(self):
+        data = request.get_json()
+        if Skill.query.filter_by(name=data["name"]).first():
+            return {"message":"Skill already exists"},400
+        skill = Skill(name=data["name"])
+        db.session.add(skill)
+        db.session.commit()
+        return skill.to_dict(),201  
 class OfferResource(Resource):
     def post(self):
         data= request.get_json()

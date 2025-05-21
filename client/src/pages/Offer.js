@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import OfferCard from "../components/OfferCard";
 import OfferSkillForm from "../components/OfferSkillForm";
+import AddCategoryForm from "../components/AddCategoryForm";
 
 function Offer({ user, setUser }) {
   const { id } = useParams();
@@ -80,6 +81,7 @@ function Offer({ user, setUser }) {
 
   return (
     <div>
+      <AddCategoryForm skills={allSkills} onSetSkills={setAllSkills} />
       Offers
       <button onClick={() => setShowForm(!showForm)}>
         {showForm ? "Cancel" : "Offer Skill"}
