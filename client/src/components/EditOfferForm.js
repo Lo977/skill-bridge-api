@@ -3,7 +3,7 @@ import React from "react";
 // import { Form } from "react-router-dom";
 import * as Yup from "yup";
 
-function EditOfferForm({ onEdit, offer, onSetForm }) {
+function EditOfferForm({ onUpdate, offer, onSetForm, onCancel }) {
   function handleSubmit(values) {
     fetch(`/offers/${offer.id}`, {
       method: "PATCH",
@@ -11,7 +11,7 @@ function EditOfferForm({ onEdit, offer, onSetForm }) {
       body: JSON.stringify(values),
     })
       .then((r) => r.json())
-      .then(onEdit);
+      .then(onUpdate);
     onSetForm(false);
   }
   return (
@@ -36,7 +36,7 @@ function EditOfferForm({ onEdit, offer, onSetForm }) {
           <ErrorMessage name="description" component="div" />
           <div>
             <button type="submit">Update</button>
-            <button type="button" onClick={() => onSetForm(false)}>
+            <button type="button" onClick={onCancel}>
               Cancel
             </button>
           </div>

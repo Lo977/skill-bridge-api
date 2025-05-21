@@ -42,14 +42,19 @@ function OfferSkillForm({
         onSubmit={handleSubmit}
       >
         <Form>
-          <Field as="select" name="skill_id">
-            <option value="">Select a Category</option>
-            {skills.map((skill) => (
-              <option value={skill.id} key={skill.id}>
-                {skill.name}
-              </option>
-            ))}
-          </Field>
+          {!preSelectSkill && (
+            <div>
+              <Field as="select" name="skill_id">
+                <option value="">Select a Category</option>
+                {skills.map((skill) => (
+                  <option value={skill.id} key={skill.id}>
+                    {skill.name}
+                  </option>
+                ))}
+              </Field>
+              <ErrorMessage name="skill_id" component="div" />
+            </div>
+          )}
           <Field type="text" name="title" placeholder="Title" />
           <ErrorMessage name="title" component="div" />
           <Field
@@ -60,8 +65,8 @@ function OfferSkillForm({
           />
           <ErrorMessage name="description" component="div" />
           <div>
-            <button type="submit ">Add</button>
-            {/* <button>Cancel</button> */}
+            <button type="submit">Add</button>
+            <button onClick={() => onCancel(null)}>Cancel</button>
           </div>
         </Form>
       </Formik>

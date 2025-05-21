@@ -4,9 +4,10 @@ import OfferCard from "../components/OfferCard";
 import OfferSkillForm from "../components/OfferSkillForm";
 
 function Offer({ user, setUser }) {
+  const { id } = useParams();
+  const [editId, setEditId] = useState(id || null);
   const [allSkills, setAllSkills] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const { id } = useParams();
   useEffect(() => {
     fetch("/skills")
       .then((r) => r.json())
@@ -17,8 +18,8 @@ function Offer({ user, setUser }) {
     return userSkills.map((skill) => {
       if (skill.id === newOffer.skill_id) {
         return {
-          ...userSkills,
-          offers: { ...skill.offers, newOffer },
+          ...skill,
+          offers: [...skill.offers, newOffer],
         };
       } else {
         return skill;
@@ -74,7 +75,7 @@ function Offer({ user, setUser }) {
     );
 
     setUser({ ...user, skills: updatedSkills });
-    // setEditingOfferId(null);
+    setEditId(null);
   }
 
   return (
@@ -90,12 +91,19 @@ function Offer({ user, setUser }) {
           onAddOffer={handleAddOffer}
         />
       )}
-      <OfferCard
-        user={user}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-        skills={allSkills}
-      />
+      {user.skills.length === 0 ? (
+        <p>You have no offers yet.Start by adding one.</p>
+      ) : (
+        <OfferCard
+          user={user}
+          editId={editId}
+          onDelete={handleDelete}
+          setEditId={setEditId}
+          onEdit={handleEdit}
+          skills={allSkills}
+          onAddOffer={handleAddOffer}
+        />
+      )}
     </div>
   );
 }
