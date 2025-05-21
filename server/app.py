@@ -52,13 +52,17 @@ class SkillResource(Resource):
     def get(self):
         return [skill.to_dict() for skill in Skill.query.all()],200
 class OfferResource(Resource):
-    # def get(self,id=None):
-    #     if id in None:
-    #         offers = Offer.query.all()
-    #         return[offer.to_dict() for offer in offers],200
-    #     else:
-    #         offer = Offer.query.filter_by(id=id).first()    
-    #         return offer.to_dict(),200
+    def post(self):
+        data= request.get_json()
+        new_offer = Offer(
+            title=data['title'],
+            description=data['description'],
+            user_id=data['user_id'],
+            skill_id=data['skill_id']
+        )
+        db.session.add(new_offer)   
+        db.session.commit() 
+        return new_offer.to_dict(),201
         
     def delete(self,id):
         offer = Offer.query.get(id) 

@@ -1,10 +1,49 @@
 import { useParams } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OfferCard from "../components/OfferCard";
+import OfferSkillForm from "../components/OfferSkillForm";
 
 function Offer({ user, setUser }) {
+  const [allSkills, setAllSkills] = useState([]);
+  const [showForm, setShowForm] = useState(false);
   const { id } = useParams();
+  useEffect(() => {
+    fetch("/skills")
+      .then((r) => r.json())
+      .then(setAllSkills);
+  }, []);
 
+  function addOfferToExistingSkill(userSkills, newOffer) {
+    return userSkills.map((skill) => {
+      if (skill.id === newOffer.skill_id) {
+        return {
+          ...userSkills,
+          offers: { ...skill.offers, newOffer },
+        };
+      } else {
+        return skill;
+      }
+    });
+  }
+  function addOfferAsNewSkill(userSkills, newOffer, allSkills) {
+    const newSkill = allSkills.find((skill) => skill.id === newOffer.skill_id);
+    const skillWithOffer = {
+      ...newSkill,
+      offers: [newOffer],
+    };
+    return [...userSkills, skillWithOffer];
+  }
+
+  function handleAddOffer(newOffer) {
+    const existingSkill = user.skills.some(
+      (skill) => skill.id === newOffer.skill_id
+    );
+    const updatedSkills = existingSkill
+      ? addOfferToExistingSkill(user.skills, newOffer)
+      : addOfferAsNewSkill(user.skills, newOffer, allSkills);
+    setUser({ ...user, skills: updatedSkills });
+    setShowForm(false);
+  }
   function handleDelete(id) {
     fetch(`/offers/${id}`, {
       method: "DELETE",
@@ -41,7 +80,22 @@ function Offer({ user, setUser }) {
   return (
     <div>
       Offers
-      <OfferCard user={user} onDelete={handleDelete} onEdit={handleEdit} />
+      <button onClick={() => setShowForm(!showForm)}>
+        {showForm ? "Cancel" : "Offer Skill"}
+      </button>
+      {showForm && (
+        <OfferSkillForm
+          user={user}
+          skills={allSkills}
+          onAddOffer={handleAddOffer}
+        />
+      )}
+      <OfferCard
+        user={user}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
+        skills={allSkills}
+      />
     </div>
   );
 }

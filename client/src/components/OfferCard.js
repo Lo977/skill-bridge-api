@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EditOfferForm from "./EditOfferForm";
+import OfferSkillForm from "./OfferSkillForm";
 
-function OfferCard({ user, onDelete, onEdit }) {
+function OfferCard({ user, onDelete, onEdit, skills }) {
   const [expandCategory, setExpandCategory] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [showFormForCategory, setShowFormForCategory] = useState(null);
+  console.log(showFormForCategory);
   const navigate = useNavigate();
   console.log(expandCategory);
   const renderedOffers = user.skills.map((skill) => {
+    const selectedSkill = skills.find((s) => s.id === skill.id);
     return (
       <div>
         <h4
@@ -23,7 +27,8 @@ function OfferCard({ user, onDelete, onEdit }) {
             <ul>
               {skill.offers.map((offer) => (
                 <>
-                  <strong> - {offer.title}</strong>- {offer.description}
+                  <strong key={offer.id}> - {offer.title}</strong>-{" "}
+                  {offer.description}
                   <div>
                     <button onClick={() => onDelete(offer.id)}>Delete</button>
                     <button
@@ -45,6 +50,18 @@ function OfferCard({ user, onDelete, onEdit }) {
                 </>
               ))}
             </ul>
+
+            {showFormForCategory === skill.name ? (
+              <OfferSkillForm
+                skills={skills}
+                onCancel={setShowFormForCategory}
+                preSelectSkill={selectedSkill}
+              />
+            ) : (
+              <button onClick={() => setShowFormForCategory(skill.name)}>
+                Add Offer
+              </button>
+            )}
           </>
         )}
       </div>
