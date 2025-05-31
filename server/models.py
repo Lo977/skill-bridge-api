@@ -37,25 +37,66 @@ class User(db.Model, SerializerMixin):
             raise ValueError("Username is required")
         return value
     
+    # def to_dict(self):
+    #     return {
+    #         "id": self.id,
+    #         "username": self.username,
+    #         "email": self.email,
+    #         # "offers": [offer.to_dict(include_user=True) for offer in self.offers],
+    #         "skills": [
+    #           {
+    #                 "id": offer.skill.id,
+    #                 "name": offer.skill.name,
+    #                 "offers": [
+    #                     o.to_dict()
+    #                     for o in offer.skill.offers
+    #                     if o.user_id == self.id
+    #                 ]
+    #             } for offer in self.offers ]
+    #     }
+        # return {
+        #     "id": self.id,
+        #     "username": self.username,
+        #     "email": self.email,
+        #     # "offers": [offer.to_dict(include_user=True) for offer in self.offers],
+        #     "skills": list({
+        #         offer.skill.id: {
+        #             "id": offer.skill.id,
+        #             "name": offer.skill.name,
+        #             "offers": [
+        #                 o.to_dict()
+        #                 for o in offer.skill.offers
+        #                 if o.user_id == self.id
+        #             ]
+        #         } for offer in self.offers if offer.skill
+        #     }.values())
+        # }
     def to_dict(self):
+        skill_ids = []
+        skills = []
+
+        for offer in self.offers:
+            skill = offer.skill
+
+            if skill.id not in skill_ids:
+                skill_ids.append(skill.id)
+
+                skills.append({
+                    "id": skill.id,
+                    "name": skill.name,
+                    "offers": [
+                        o.to_dict()
+                        for o in skill.offers
+                        if o.user_id == self.id
+                    ]
+                })
+
         return {
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            # "offers": [offer.to_dict(include_user=True) for offer in self.offers],
-            "skills": list({
-                offer.skill.id: {
-                    "id": offer.skill.id,
-                    "name": offer.skill.name,
-                    "offers": [
-                        o.to_dict()
-                        for o in offer.skill.offers
-                        if o.user_id == self.id
-                    ]
-                } for offer in self.offers if offer.skill
-            }.values())
-        }
-
+            "skills": skills
+    }
 
 
     def __repr__(self):

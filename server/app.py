@@ -79,13 +79,16 @@ class OfferResource(Resource):
         return {},204
     
     def patch(self, id):
-        offer = Offer.query.get_or_404(id)
+    
+        offer = Offer.query.get(id)
+        if not offer:
+            return {"error": "Offer not found"}, 404
         data = request.get_json()
-        for attr in ['title', 'description']:
-            if attr in data:
-                setattr(offer, attr, data[attr])
+        offer.title = data["title"]
+        offer.description = data["description"]
         db.session.commit()
         return offer.to_dict(), 200
+
 api.add_resource(CheckSession,"/check_session")
 api.add_resource(Singup,"/signup")
 api.add_resource(Login,"/login")
