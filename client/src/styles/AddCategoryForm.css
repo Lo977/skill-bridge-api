@@ -1,0 +1,35 @@
+.category-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.category-form div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+.category-form input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.category-form button {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: green;
+  color: white;
+}
+.error {
+  color: rgb(168, 5, 5);
+  font-size: 1rem;
+  margin-left: 0.25rem;
+}

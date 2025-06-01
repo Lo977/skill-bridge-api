@@ -1,0 +1,8 @@
+.user-profile {
+  padding: 1rem;
+  /* margin: 1rem auto; */
+  background-color: cadetblue;
+  height: 100vh;
+  align-items: center;
+  color: rgb(130, 37, 3);
+}

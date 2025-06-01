@@ -1,0 +1,49 @@
+.offer-container {
+  padding: 1rem;
+  /* margin: 1rem auto; */
+  background-color: cadetblue;
+  height: 100vh;
+}
+.offer-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.offer-header h2 {
+  color: rgb(12, 1, 20);
+}
+.offer-header button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  background-color: rgb(9, 123, 9);
+  color: #edeff0;
+  cursor: pointer;
+}
+.back-to-skills {
+  padding: 0.5rem;
+  /* margin-top: 1rem; */
+  border: none;
+  border-radius: 6px;
+  background-color: chocolate;
+  color: white;
+  cursor: pointer;
+}
+.user-skills-list h4 {
+  display: flex;
+  justify-content: left;
+  cursor: pointer;
+  margin: 0.5rem;
+  color: rgb(112, 47, 1);
+}
+.user-skills-list h4:hover {
+  color: rgb(177, 78, 7);
+}
+.user-skills-list h3 {
+  text-decoration: underline;
+  padding: 1rem;
+  font-size: x-large;
+}

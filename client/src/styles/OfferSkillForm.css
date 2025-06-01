@@ -1,0 +1,28 @@
+.offer-skill-form {
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 2px;
+  max-width: 400px;
+  margin: 1.5rem;
+  color: rgb(159, 35, 35);
+}
+.offer-skill-form div {
+  margin-bottom: 0.4rem;
+}
+.offer-skill-form input,
+.offer-skill-form select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.offer-skill-form button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 0.75rem;
+}

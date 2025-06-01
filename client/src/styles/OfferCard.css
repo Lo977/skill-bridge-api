@@ -1,0 +1,66 @@
+.offer-category {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.offer-category h4 {
+  font-size: 1.2rem;
+  color: rgb(12, 10, 92);
+  display: flex;
+  align-items: center;
+}
+.offer-category h4:hover {
+  color: rgb(93, 77, 21);
+}
+
+.offer-list {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0.5rem;
+}
+.offer-list strong {
+  /* font-weight: 600; */
+  color: #0b0000;
+}
+.offer-list li {
+  margin-bottom: 0.5rem;
+}
+.offer-list button {
+  margin-top: 0.5rem;
+  padding: 0.2rem;
+  border: none;
+  border-radius: 3px;
+  margin-right: 0.5rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.add-offer {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  margin-top: 2rem;
+  background-color: darkgreen;
+  color: white;
+}
+.add-offer:hover {
+  background-color: green;
+  font-size: 1.1rem;
+}
+.offer-list button:hover {
+  background-color: rgb(207, 200, 200);
+}
+.offer-name {
+  font-size: 1.1rem;
+}
+.add-offer-button {
+  padding: 0.2rem;
+  border: none;
+  border-radius: 6px;
+  background-color: rgb(128, 198, 8);
+  color: white;
+  margin-top: 1rem;
+  cursor: pointer;
+}

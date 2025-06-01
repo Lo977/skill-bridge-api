@@ -1,39 +1,37 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import EditOfferForm from "./EditOfferForm";
 import OfferSkillForm from "./OfferSkillForm";
+import "../styles/OfferCard.css";
+import { useNavigate } from "react-router-dom";
 
 function OfferCard({
-  user,
+  skills,
+  editId,
   onDelete,
   onEdit,
-  skills,
+  setEditingOfferId,
+  user,
   onAddOffer,
-  editId,
-  setEditId,
 }) {
-  const [expandCategory, setExpandCategory] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [expandedSkillId, setExpandedSkillId] = useState(null);
   const [showFormForCategory, setShowFormForCategory] = useState(null);
-  const [editingOfferId, setEditingOfferId] = useState(null);
-  // console.log(showFormForCategory);
   const navigate = useNavigate();
-  console.log(skills);
-  const renderedOffers = user.skills.map((skill) => {
-    const selectedSkill = skills.find((s) => s.id === skill.id) || null;
+
+  const effectiveExpandedId =
+    expandedSkillId ?? (skills.length === 1 ? skills[0].id : null);
+
+  const renderedOffers = skills.map((skill) => {
+    const isExpanded = effectiveExpandedId === skill.id;
+
     return (
-      <div>
-        <h4
-          key={skill.id}
-          onClick={() =>
-            setExpandCategory(expandCategory === skill.name ? null : skill.name)
-          }
-        >
+      <div key={skill.id} className="offer-category">
+        <h3 onClick={() => setExpandedSkillId(isExpanded ? null : skill.id)}>
           {skill.name}
-        </h4>
-        {expandCategory === skill.name && (
+        </h3>
+
+        {isExpanded && (
           <>
-            <ul>
+            <ul className="offer-list">
               {skill.offers.map((offer) => (
                 <li key={offer.id}>
                   {editId === offer.id ? (
@@ -41,25 +39,23 @@ function OfferCard({
                       offer={offer}
                       onUpdate={onEdit}
                       onCancel={() => {
-                        setEditId(null);
-                        navigate("/offers");
+                        setEditingOfferId(null);
+                        navigate(`/my-skills/${skill.id}/offers`);
                       }}
                     />
                   ) : (
                     <>
-                      <strong key={offer.id}> - {offer.title}</strong>-{" "}
-                      {offer.description}
-                      <div>
-                        <button onClick={() => onDelete(offer.id)}>
-                          Delete
-                        </button>
+                      <strong>{offer.title}</strong> – {offer.description}
+                      <div className="offer-buttons">
+                        <button onClick={() => onDelete(offer.id)}>🗑️</button>
                         <button
-                          onClick={() => {
-                            setEditId(offer.id);
-                            navigate(`/offers/${offer.id}`);
-                          }}
+                          onClick={() =>
+                            navigate(
+                              `/my-skills/${skill.id}/offers/${offer.id}/edit`
+                            )
+                          }
                         >
-                          Edit
+                          ✏️
                         </button>
                       </div>
                     </>
@@ -72,16 +68,19 @@ function OfferCard({
               <OfferSkillForm
                 user={user}
                 skills={skills}
-                onCancel={setShowFormForCategory}
-                preSelectSkill={selectedSkill}
+                preselectedSkill={skill}
+                onCancel={() => setShowFormForCategory(null)}
                 onAddOffer={(newOffer) => {
                   onAddOffer(newOffer);
                   setShowFormForCategory(null);
                 }}
               />
             ) : (
-              <button onClick={() => setShowFormForCategory(skill.name)}>
-                Add Offer
+              <button
+                className="add-offer-button"
+                onClick={() => setShowFormForCategory(skill.name)}
+              >
+                ➕ Add Offer
               </button>
             )}
           </>

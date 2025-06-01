@@ -1,35 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
-import Signup from "./Signup";
-import { useNavigate } from "react-router-dom";
+import UserContext from "../components/UserContext";
+import "../styles/Login.css";
 
-function Login({ onLogin }) {
-  const [showLogin, setShowLogin] = useState(true);
-  const navigate = useNavigate();
+const Login = () => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate(); // 🔹 Get the navigate function
+
+  if (user) {
+    return <Navigate to="/my-skills" replace />;
+  }
+
   return (
-    <div>
-      {showLogin ? (
-        <>
-          <LoginForm onLogin={onLogin} />
-          <span>Don't have an account?</span>
-          <button
-            onClick={() => {
-              setShowLogin(false);
-              navigate("/signup");
-            }}
-          >
-            Sign Up
-          </button>
-        </>
-      ) : (
-        <>
-          <Signup onLogin={onLogin} />
-          <span>Already have an account?</span>
-          <button onAbort={() => setShowLogin(true)}>Log in</button>
-        </>
-      )}
+    <div className="login-container">
+      <div className="login-card">
+        <LoginForm />
+        <div className="login-footer">
+          <span>Don’t have an account?</span>
+        </div>
+        <button
+          className="signup-button"
+          type="button"
+          onClick={() => navigate("/signup")}
+        >
+          Sign up
+        </button>
+      </div>
     </div>
   );
-}
+};
 
 export default Login;

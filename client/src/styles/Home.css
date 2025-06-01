@@ -1,0 +1,17 @@
+.container {
+  background: cadetblue;
+  text-align: center;
+  height: 100vh;
+}
+.logo {
+  margin-top: 2rem;
+  width: 200px;
+  height: auto;
+}
+.title {
+  font-size: 2rem;
+}
+.description {
+  font-size: 1.5rem;
+  color: rgb(5, 4, 2);
+}

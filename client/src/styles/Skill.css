@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.skill-container {
+  padding: 2rem;
+  background-color: cadetblue;
+  color: rgb(72, 34, 9);
+}
+.title {
+  font-size: 1.3rem;
+  padding: 0.5rem;
+}

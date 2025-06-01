@@ -1,58 +1,75 @@
-import React from "react";
-
+import React, { useContext } from "react";
+import UserContext from "./UserContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import "../styles/LoginForm.css";
 
-function LoginForm({ onLogin }) {
-  const initalVallues = {
+function LoginForm() {
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const initialValues = {
     username: "",
     password: "",
   };
+
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
   });
-  function handleSubmit(values, { setErrors, resetForm }) {
+
+  const handleSubmit = (values) => {
     fetch("/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((user) => onLogin(user));
-        resetForm();
-      } else {
-        res
-          .json()
-          .then((error) =>
-            setErrors({ general: error.message || "Login failed" })
-          );
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((user) => {
+          setUser(user);
+          navigate("/");
+        });
       }
     });
-  }
+  };
 
   return (
-    <div>
+    <div className="login-form-container">
       <Formik
-        initialValues={initalVallues}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         <Form>
-          <Field
-            type="text"
-            // id="username"
-            name="username"
-            placeholder="username"
-          />
-          <ErrorMessage name="username" component="div" />
-          <Field
-            type="password"
-            // id="password"
-            name="password"
-            placeholder="password"
-          />
-          <ErrorMessage name="password" component="div" />
+          <div>
+            <Field
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+            />
+            <ErrorMessage
+              name="username"
+              component="div"
+              className="error-message"
+            />
+          </div>
+
+          <div>
+            <Field
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+            />
+            <ErrorMessage
+              name="password"
+              component="div"
+              className="error-message"
+            />
+          </div>
+
           <button type="submit">Login</button>
         </Form>
       </Formik>

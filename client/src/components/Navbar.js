@@ -1,36 +1,40 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import "../styles/Navbar.css";
+import UserContext from "./UserContext";
 
-function Navbar({ onLogout, user }) {
-  function handleLogout() {
+function Navbar() {
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+
+  const handleLogout = () => {
     fetch("/logout", {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {
-        onLogout(null);
+        setUser(null);
+        navigate("/login");
       }
     });
-  }
+  };
 
   return (
-    <nav>
+    <nav className="navbar">
       <ul>
         <li>
           <NavLink to="/">Home</NavLink>
         </li>
         <li>
-          <NavLink to="/offers">My Offers</NavLink>
+          <NavLink to="/my-skills">My Skills</NavLink>
         </li>
         <li>
           <NavLink to="/skills">Skills</NavLink>
         </li>
       </ul>
-      {user && (
-        <div>
-          <NavLink to={`/users/${user.username}`}>{user.username}</NavLink>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      )}
+
+      <div>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
     </nav>
   );
 }

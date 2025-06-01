@@ -1,0 +1,31 @@
+.edit-offer {
+  max-width: 500px;
+  margin-bottom: 7rem;
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 5px;
+}
+.edit-offer label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+.edit-offer input {
+  width: 100%;
+  border-radius: 2px;
+  border: 1px solid black;
+  font-size: 1.3rem;
+  outline: none;
+  margin-bottom: 1rem;
+  padding: 0.3rem;
+}
+.edit-offer button {
+  padding: 0.6rem;
+  border: none;
+  margin: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.edit-offer button:hover {
+  background-color: rgb(207, 200, 200);
+}

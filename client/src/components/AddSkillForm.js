@@ -1,11 +1,11 @@
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import React from "react";
 import * as Yup from "yup";
+import "../styles/AddCategoryForm.css";
 
-function AddCategoryForm({ skills, onSetSkills }) {
+function AddSkillForm({ skills, onSetSkills }) {
   return (
     <div>
-      AddCategoryForm
       <Formik
         initialValues={{ newCategory: "" }}
         validationSchema={Yup.object({
@@ -16,7 +16,7 @@ function AddCategoryForm({ skills, onSetSkills }) {
         onSubmit={(values, { setFieldError, resetForm }) => {
           const newName = values.newCategory.trim().toLowerCase();
           if (skills.some((skill) => skill.name.toLowerCase() === newName)) {
-            setFieldError("newCategory", "This category is already exists ");
+            setFieldError("newCategory", "This category already exists");
             return;
           }
           fetch("/skills", {
@@ -29,18 +29,21 @@ function AddCategoryForm({ skills, onSetSkills }) {
           resetForm();
         }}
       >
-        <Form>
-          <Field
-            name="newCategory"
-            type="text"
-            placeholder="e.g., Web Development"
-          />
-          <button>Add New Category</button>
-          <ErrorMessage name="newCategory" component="div" />
+        <Form className="category-form">
+          <div>
+            <Field
+              name="newCategory"
+              type="text"
+              placeholder="e.g., Web Development"
+            />
+            <button type="submit">Add New Skill</button>
+          </div>
+
+          <ErrorMessage name="newCategory" component="div" className="error" />
         </Form>
       </Formik>
     </div>
   );
 }
 
-export default AddCategoryForm;
+export default AddSkillForm;
